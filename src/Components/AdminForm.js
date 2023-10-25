@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 
-const AdminForm = ({ addMeals, hideAddItemForm }) => {
+const AdminForm = ({ addMeal, hideAddItemForm }) => {
   const [newMeal, setNewMeal] = useState({name:"", desc:"", img:"", price:""});
 
   const handleSubmit = (e) => {
@@ -10,7 +10,7 @@ const AdminForm = ({ addMeals, hideAddItemForm }) => {
       alert("All the fields are mandatory!");
       return;
     }
-    addMeals(newMeal);
+    addMeal(newMeal);
     setNewMeal({name:"", desc:"", img:"", price:""});
   }
 

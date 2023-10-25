@@ -1,8 +1,12 @@
 import { Card, CardActionArea, CardMedia, CardContent, CardActions, Button } from "@mui/material";
 
-const MealsItem = ({ meal }) => {
-  const { name, desc, img, price } = meal;
-  
+const MealsItem = ({ meal, deleteMeal }) => {
+  const { id, name, desc, img, price } = meal;
+
+  const handleDelete = () => {
+    deleteMeal(id);
+  }
+
   return (
     <>
       <Card>
@@ -23,7 +27,7 @@ const MealsItem = ({ meal }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button>
+          <Button onClick={handleDelete}>
             Delete
           </Button>
         </CardActions>

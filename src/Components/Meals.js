@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import MealsItem from "./MealsItem";
-const Meals = ({ meals }) => {
+const Meals = ({ meals, deleteMeal }) => {
  
   return (
     <div className="meals-container">
@@ -12,6 +12,7 @@ const Meals = ({ meals }) => {
               <Grid item xs={12} sm={6} md={4} lg={3} key={meal.id}>
                 <MealsItem 
                   meal={meal}
+                  deleteMeal={deleteMeal}
                 />
               </Grid>
             )

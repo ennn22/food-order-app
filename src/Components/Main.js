@@ -22,7 +22,7 @@ const Main = () => {
     getMeals();
   }, [])
 
-const addMeals = async (meal) => {
+const addMeal = async (meal) => {
   const request = { id: Date.now(), ...meal};
   console.log("request:", request);
   const res = await api.post("/meals", request);
@@ -30,10 +30,18 @@ const addMeals = async (meal) => {
   setMeals([...meals, res.data]);
 };
 
+const deleteMeal = async (id) => {
+  await api.delete(`/meals/${id}`);
+  const updatedMealList = meals.filter((meal) => {
+    return meal.id !== id;
+  });
+  setMeals(updatedMealList);
+}
+
   return (
     <Box style={{ flex: 4 }}>
       {isValid ? (
-        <AdminForm addMeals={addMeals} hideAddItemForm={hideAddItemForm} />
+        <AdminForm addMeal={addMeal} hideAddItemForm={hideAddItemForm} />
       ) : (
         <Button
           variant="contained"
@@ -43,7 +51,7 @@ const addMeals = async (meal) => {
           Add Food Item
         </Button>
       )}
-      <Meals meals={meals} addMeals={addMeals}/>
+      <Meals meals={meals} addMeal={addMeal} deleteMeal={deleteMeal}/>
     </Box>
   )
 }

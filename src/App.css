@@ -1,38 +1,53 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --bg-color-1: #fff1f2;
+  --bg-color-2: #451a03;
+  --bg-color-3: #fecaca;
+  --font-color-1: #451a03;
+  --font-color-2: #fff1f2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  background-color: var(--bg-color-1);
+  color: var(--font-color-1);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* admin portion */
+.admin-side-bar {
+  border: 1px solid red;
+}
+
+.admin-form-container {
+  background-color: var(--bg-color-3);
+  width: 25vw;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.admin-form-input input {
+  background-color: var(--bg-color-1);
+  border-radius: 5px;
+}
+
+.admin-main {
+  border: 1px solid green;
+}
+
+.admin-form-upload {
+  padding: 10px 0;
+}
+
+.admin-form-btn {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.meals-container h4 {
+  text-align: center;
+  text-transform: uppercase;
 }

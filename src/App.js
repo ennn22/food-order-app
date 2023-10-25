@@ -1,7 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-import ItemsContext from './Store/ItemsContext';
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
+import ItemsContext from './Store/ItemsContext.js';
+import Users from './Pages/Users';
+import Admin from './Pages/Admin';
+import Footer from './Components/Footer'
 
 
 function App() {

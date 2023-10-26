@@ -1,19 +1,17 @@
+import { useState } from 'react';
 import './App.css';
-import { Fragment, useContext } from 'react';
-import ItemsContext from './Store/ItemsContext.js';
 import Users from './Pages/Users';
 import Admin from './Pages/Admin';
 import Footer from './Components/Footer'
 
-
 function App() {
-  const itemsCtx = useContext(ItemsContext);
-
+  const [switchPage, setSwitchPage] = useState(false);
+  
   return (
-    <Fragment>
-      {itemsCtx.switchPage ? <Users /> : <Admin />}
-      <Footer />
-    </Fragment>
+    <div className='main-container'>
+        {switchPage ? <Users /> : <Admin /> }
+        <Footer switchPage={switchPage} setSwitchPage={setSwitchPage}/>
+    </div>
   );
 }
 

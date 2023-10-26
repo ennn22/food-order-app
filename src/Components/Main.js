@@ -19,7 +19,7 @@ const Main = () => {
   }
 
   useEffect(() => {
-    getMeals();
+    // getMeals();
   }, [])
 
 const addMeal = async (meal) => {

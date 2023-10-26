@@ -17,13 +17,14 @@ const Users = () => {
 
   return (
     <CartProvider>
+      <h1>Users</h1>
       <Appbar modalHandler={showModalHandler} />
       {isValid && <Cart hideModalHandler={hideModalHandler} />}
       <Banner />
       <section>
         <AboutUs />
         <div style={{ marginTop: "15rem" }} className="top-margin">
-          <Meals />
+          <Meals meals={[]}/>
         </div>
       </section>
     </CartProvider>

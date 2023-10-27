@@ -1,8 +1,11 @@
 import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from '@mui/material'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import { useItemContext } from "../Store/ItemsProvider.js";
 
-const Footer = ({ switchPage, setSwitchPage }) => {
+const Footer = () => {
+
+  const { switchPage, setSwitchPage } = useItemContext();
 
   return (
     <Box className="footer">

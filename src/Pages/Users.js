@@ -24,7 +24,7 @@ const Users = () => {
       <section>
         <AboutUs />
         <div style={{ marginTop: "15rem" }} className="top-margin">
-          <Meals meals={[]}/>
+          <Meals />
         </div>
       </section>
     </CartProvider>

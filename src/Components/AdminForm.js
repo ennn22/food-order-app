@@ -1,25 +1,37 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
+import { useItemContext } from "../Store/ItemsProvider.js";
 
-const AdminForm = ({ addMeal, hideAddItemForm }) => {
-  const [newMeal, setNewMeal] = useState({name:"", desc:"", img:"", price:""});
+const AdminForm = ({ hideAddItemForm }) => {
+  const [newItem, setNewItem] = useState({name:"", desc:"", img:"", price:""});
+  const { addItem } = useItemContext();
+  // const [newMeal, setNewMeal] = useState({name:"", desc:"", img:"", price:""});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (newMeal.name === "" || newMeal.desc === "" || newMeal.price === "" || newMeal.img === "") {
-      alert("All the fields are mandatory!");
-      return;
-    }
-    addMeal(newMeal);
-    setNewMeal({name:"", desc:"", img:"", price:""});
-  }
+  // const handleSubmitItem = (e) => {
+  //   e.preventDefault();
+  //   addNewItem(newMeal);
+  //   setNewItem({name:"", desc:"", img:"", price:""});
+  // }
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setNewMeal((previousMeal) => ({
-      ...previousMeal, [name]: value
+    setNewItem((previousItem) => ({
+      ...previousItem, [name]: value
     })) 
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addItem(newItem);
+    setNewItem({name:"", desc:"", img:"", price:""});
+  }
+  
+  // const handleInput = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewMeal((previousMeal) => ({
+  //     ...previousMeal, [name]: value
+  //   })) 
+  // };
   
   return (
     <Box className="admin-form-container"> 
@@ -34,7 +46,7 @@ const AdminForm = ({ addMeal, hideAddItemForm }) => {
             label="Name"
             variant="outlined"
             name="name"
-            value={newMeal.name}
+            value={newItem.name}
             onChange={handleInput}
           /> 
           <TextField
@@ -46,7 +58,7 @@ const AdminForm = ({ addMeal, hideAddItemForm }) => {
             label="Description"
             variant="outlined"
             name="desc"
-            value={newMeal.desc}
+            value={newItem.desc}
             onChange={handleInput}
           /> 
           <TextField
@@ -58,7 +70,7 @@ const AdminForm = ({ addMeal, hideAddItemForm }) => {
             label="Price"
             variant="outlined"
             name="price"
-            value={newMeal.price}
+            value={newItem.price}
             onChange={handleInput}
           />
           <TextField
@@ -70,7 +82,7 @@ const AdminForm = ({ addMeal, hideAddItemForm }) => {
             label="Image"
             variant="outlined"
             name="img"
-            value={newMeal.img}
+            value={newItem.img}
             onChange={handleInput}
           />
         </div>

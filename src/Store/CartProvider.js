@@ -2,8 +2,14 @@ import Cart from "../Components/Cart"
 import CartContext from './CartContext'
 
 const CartProvider = ({ children }) => {
+
+
+  const cartCtxValue = {
+    
+  }
+
   return (
-    <CartContext.Provider value={{hetotalAmountllo: 1}}>
+    <CartContext.Provider value={cartCtxValue}>
       { children }
     </CartContext.Provider>
   )

@@ -1,20 +1,21 @@
-// import { AppBar, IconButton, Toolbar } from "@mui/material";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+import { AppBar, Badge, Fab, Stack, Toolbar, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const Appbar = () => {
   return (
     <div className="app-bar">
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
-          {/* <IconButton color="primary" aria-label="add to shopping cart">
-            <AddShoppingCartIcon />
-          </IconButton> */}
+          <Stack>
+            <Fab variant="extended">
+              <p>Your Cart</p>
+              <Badge badgeContent={4} color="secondary">
+                <AddShoppingCartIcon sx={{ mr: 1 }} />
+              </Badge>
+            </Fab>
+          </Stack>
         </Toolbar>
       </AppBar>
-      <h1>App Bar</h1>
     </div>
   )
 }

@@ -1,10 +1,13 @@
 import { Card, CardActionArea, CardMedia, CardContent, CardActions, Button } from "@mui/material";
+import { useItemContext } from "../Store/ItemsProvider.js";
 
-const MealsItem = ({ meal, deleteMeal }) => {
-  const { id, name, desc, img, price } = meal;
+const MealsItem = ({ item }) => {
+  const { deleteItem, switchPage } = useItemContext();
+  const { id, name, desc, img, price } = item;
+    // const { id, name, desc, img, price } = meal;
 
   const handleDelete = () => {
-    deleteMeal(id);
+    deleteItem(id);
   }
 
   return (
@@ -30,6 +33,9 @@ const MealsItem = ({ meal, deleteMeal }) => {
           <Button onClick={handleDelete}>
             Delete
           </Button>
+          {
+            switchPage ? "Add to Cart" : "Delete"
+          }
         </CardActions>
       </Card>
     </>

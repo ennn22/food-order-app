@@ -6,42 +6,44 @@ import api from "../Api/meals";
 
 const Main = () => {
   const [isValid, setIsValid] = useState(false);
-  const [meals, setMeals] = useState([]);
 
   const showAddItemForm = () => setIsValid(true);
   
   const hideAddItemForm = () => setIsValid(false);
 
-  const getMeals = async () => {
-    const res = await api.get("/meals");
-    const data = res.data;
-    setMeals(data);
-  }
+//get Meals Menu from Api
+  // const getMeals = async () => {
+  //   const res = await api.get("/meals");
+  //   const data = res.data;
+  //   setMeals(data);
+  // }
 
-  useEffect(() => {
-    // getMeals();
-  }, [])
+  // useEffect(() => {
+  //   getMeals();
+  // }, [])
 
-const addMeal = async (meal) => {
-  const request = { id: Date.now(), ...meal};
-  console.log("request:", request);
-  const res = await api.post("/meals", request);
-  console.log("response:", res.data);
-  setMeals([...meals, res.data]);
-};
+//Add new meal to menu
+// const addMeal = async (meal) => {
+//   const request = { id: Date.now(), ...meal};
+//   console.log("request:", request);
+//   const res = await api.post("/meals", request);
+//   console.log("response:", res.data);
+//   setMeals([...meals, res.data]);
+// };
 
-const deleteMeal = async (id) => {
-  await api.delete(`/meals/${id}`);
-  const updatedMealList = meals.filter((meal) => {
-    return meal.id !== id;
-  });
-  setMeals(updatedMealList);
-}
+//Delete meal from menu
+// const deleteMeal = async (id) => {
+//   await api.delete(`/meals/${id}`);
+//   const updatedMealList = meals.filter((meal) => {
+//     return meal.id !== id;
+//   });
+//   setMeals(updatedMealList);
+// }
 
   return (
-    <Box style={{ flex: 4 }}>
+    <Box>
       {isValid ? (
-        <AdminForm addMeal={addMeal} hideAddItemForm={hideAddItemForm} />
+        <AdminForm hideAddItemForm={hideAddItemForm} />
       ) : (
         <Button
           variant="contained"
@@ -51,7 +53,7 @@ const deleteMeal = async (id) => {
           Add Food Item
         </Button>
       )}
-      <Meals meals={meals} addMeal={addMeal} deleteMeal={deleteMeal}/>
+      <Meals />
     </Box>
   )
 }

@@ -69,3 +69,53 @@ body {
 .switchpage-btn-container h6 {
   padding-left: 5px;
 }
+
+.dialog-title {
+  text-align: center;
+}
+
+.cart-items {
+  min-width: 400px;
+  font-size: 18px;
+}
+
+.cart-item {
+  
+}
+
+.item-details {
+  width: 40%;
+}
+
+.item-price {
+  font-size: 0.9rem;
+}
+
+.item-qty {
+  width: 15%;
+  border: 1px solid black;
+  text-align: center;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.item-action {
+  width: 30%;
+  text-align: center;
+}
+
+.total-item-amount {
+  width: 15%;
+}
+
+.total-amount {
+  font-weight: 600;
+  font-size: 20px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-action-button {
+  padding-top: 10px;
+}

@@ -1,15 +1,20 @@
-import { AppBar, Badge, Fab, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Fab, Stack, Toolbar } from "@mui/material";
+import { createPortal } from 'react-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useCartContext } from "../Store/CartProvider.js"
 
-const Appbar = () => {
+const Appbar = ({ showModalHandler }) => {
+  const { cartItems } = useCartContext();
+
+
   return (
     <div className="app-bar">
       <AppBar position="sticky">
         <Toolbar>
           <Stack>
-            <Fab variant="extended">
+            <Fab variant="extended" onClick={showModalHandler}>
               <p>Your Cart</p>
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cartItems.length} color="secondary">
                 <AddShoppingCartIcon sx={{ mr: 1 }} />
               </Badge>
             </Fab>

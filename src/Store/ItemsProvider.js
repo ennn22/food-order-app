@@ -48,7 +48,7 @@ export function useItemContext() {
 // }
 
 const ItemsProvider = ({ children }) => {
-  const [switchPage, setSwitchPage] = useState(false);
+  const [switchPage, setSwitchPage] = useState(true);
   const [itemsData, setItemsData] = useState([]);
 
   // const [state, dispatch] = useReducer(reducer, initialState);

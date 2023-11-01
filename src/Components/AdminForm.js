@@ -1,17 +1,14 @@
 import { Box, Button, TextField } from "@mui/material";
+import axios from "axios";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState } from "react";
 import { useItemContext } from "../Store/ItemsProvider.js";
 
-const AdminForm = ({ hideAddItemForm }) => {
-  const [newItem, setNewItem] = useState({name:"", desc:"", img:"", price:""});
-  const { addItem } = useItemContext();
-  // const [newMeal, setNewMeal] = useState({name:"", desc:"", img:"", price:""});
+const apiKey = process.env.REACT_APP_API_KEY;
 
-  // const handleSubmitItem = (e) => {
-  //   e.preventDefault();
-  //   addNewItem(newMeal);
-  //   setNewItem({name:"", desc:"", img:"", price:""});
-  // }
+const AdminForm = ({ hideAddItemForm }) => {
+  const [newItem, setNewItem] = useState({name:"", desc:"", price:"", file: ""});
+  const { addItem } = useItemContext();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -20,18 +17,45 @@ const AdminForm = ({ hideAddItemForm }) => {
     })) 
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addItem(newItem);
-    setNewItem({name:"", desc:"", img:"", price:""});
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+
+
+  const uploadFile = (data) => {
+    
+
+    axios.post('https://api.imgbb.com/1/upload', {
+      key: apiKey,
+      image: data,
+      expiration: 600
+    }, {
+      headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Headers': '*',
+      },
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
-  
-  // const handleInput = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewMeal((previousMeal) => ({
-  //     ...previousMeal, [name]: value
-  //   })) 
-  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const fileInput = document.querySelector('#file-input') ;
+    const img = await toBase64(fileInput.files[0]);
+    console.log(img)
+    uploadFile(img)
+    // addItem(newItem);
+    // setNewItem({name:"", desc:"", price:"", file: ""});
+
+  }
   
   return (
     <Box className="admin-form-container"> 
@@ -73,7 +97,7 @@ const AdminForm = ({ hideAddItemForm }) => {
             value={newItem.price}
             onChange={handleInput}
           />
-          <TextField
+          {/* <TextField
             required
             fullWidth
             size="small"
@@ -84,12 +108,12 @@ const AdminForm = ({ hideAddItemForm }) => {
             name="img"
             value={newItem.img}
             onChange={handleInput}
-          />
+          /> */}
         </div>
-        {/* <div className="admin-form-upload">
-            <label htmlFor="file">Choose a file</label>
-            <input type="file" id="file" name="img"/>
-        </div> */}
+        <div className="admin-form-upload">
+            <label htmlFor="file"></label>
+            <input required id="file-input" type="file" name="img"/>
+        </div>
         <div className="admin-form-btn">
           <Button type="submit" size="small" variant="contained" color="success">
             Add

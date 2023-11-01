@@ -11,22 +11,34 @@ const CartProvider = ({ children }) => {
   const { itemsData } = useItemContext();
   const LOCAL_STORAGE_KEY = "cart-items";
   const localStorageCartQty = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const lsCartParse = localStorageCartQty ? JSON.parse(localStorageCartQty) : {}
+  const lsCartParse = localStorageCartQty ? JSON.parse(localStorageCartQty) : {};
 
-  const [cartItems, setCartItems] = useState(() => {
-    return Object.keys(lsCartParse).map((cart) => {
-      return itemsData.find(i => i.name === cart)
-    })
-  });
+  const cartItemsData = itemsData.filter((item) => {
+    return Object.keys(lsCartParse).includes(item.name);
+  })
+
+  const [cartItems, setCartItems] = useState(cartItemsData);
+
+  // const [cartItems, setCartItems] = useState(() => {
+  //   return Object.keys(lsCartParse).map((cart) => {
+  //     return itemsData.find(i => i.name === cart)
+  //   })
+  // });
   const [totalAmount, setTotalAmount] = useState(0);
   const [qty, setQty] = useState(lsCartParse);
 
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(qty));
+    const newTotalAmount = cartItems.reduce((total, item) => {
+      return (qty[item.name] * item.price) + total;
+    }, 0)
+    setTotalAmount(newTotalAmount);
+  }, [qty])
+
   //Add item to cart
   const addItemToCart = (item) => {
-
     const inCartItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
     const inCartItem = cartItems[inCartItemIndex];
-
     if (inCartItem) {
       setQty({
         ...qty,
@@ -48,14 +60,6 @@ const CartProvider = ({ children }) => {
     });
     setCartItems(updatedCartItems);
   }
-  
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(qty));
-    const newTotalPrice = cartItems.reduce((total, item) => {
-      return (qty[item.name] * item.price) + total;
-    }, 0)
-    setTotalAmount(newTotalPrice);
-  }, [qty])
 
   const handleAdd = (item) => {
     setQty({
@@ -75,13 +79,19 @@ const CartProvider = ({ children }) => {
     }
   }
 
+  const clearAll = (item) => {
+    setCartItems([]);
+    setTotalAmount(0);
+  }
+
   const cartCtxValue = {
     cartItems,
     totalAmount,
     qty,
     addItem: addItemToCart,
     handleAdd,
-    handleRemove
+    handleRemove,
+    clearAll
   };
 
   return (

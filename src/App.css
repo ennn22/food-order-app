@@ -79,9 +79,7 @@ body {
   font-size: 18px;
 }
 
-.cart-item {
-  
-}
+
 
 .item-details {
   width: 40%;
@@ -118,4 +116,9 @@ body {
 
 .cart-action-button {
   padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.clear-all-btn {
 }

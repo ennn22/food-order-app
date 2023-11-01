@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 const Cart = ({ isValid, onClose }) => {
-  const { cartItems, totalAmount, qty, handleAdd, handleRemove } = useCartContext();
+  const { cartItems, totalAmount, qty, handleAdd, handleRemove, clearAll } = useCartContext();
 
   return (
     <Dialog className="cart-dialog" open={isValid} onClose={onClose}>
@@ -47,7 +47,12 @@ const Cart = ({ isValid, onClose }) => {
         </div>
         <Divider />
         <div className="cart-action-button">
-          <Button onClick={onClose}>Close</Button>
+          <div>
+            <Button size="small" onClick={() => clearAll()} >
+              <Typography variant="button" sx={{ textDecoration: "underline" }}>Clear all</Typography>
+            </Button>
+            <Button variant="outlined" size="small" onClick={onClose}>Close</Button>
+          </div>
           <Button variant="contained">order</Button>
         </div>
       </DialogContent>

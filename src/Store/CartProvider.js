@@ -1,5 +1,6 @@
 import Cart from "../Components/Cart"
 import CartContext from './CartContext'
+import { useItemContext } from "./ItemsProvider.js";
 import { useContext, useEffect, useState } from 'react';
 
 export function useCartContext() {
@@ -7,9 +8,18 @@ export function useCartContext() {
 }
 
 const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const { itemsData } = useItemContext();
+  const LOCAL_STORAGE_KEY = "cart-items";
+  const localStorageCartQty = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const lsCartParse = localStorageCartQty ? JSON.parse(localStorageCartQty) : {}
+
+  const [cartItems, setCartItems] = useState(() => {
+    return Object.keys(lsCartParse).map((cart) => {
+      return itemsData.find(i => i.name === cart)
+    })
+  });
   const [totalAmount, setTotalAmount] = useState(0);
-  const [qty, setQty] = useState({});
+  const [qty, setQty] = useState(lsCartParse);
 
   //Add item to cart
   const addItemToCart = (item) => {
@@ -40,6 +50,7 @@ const CartProvider = ({ children }) => {
   }
   
   useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(qty));
     const newTotalPrice = cartItems.reduce((total, item) => {
       return (qty[item.name] * item.price) + total;
     }, 0)

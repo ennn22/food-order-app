@@ -12,26 +12,6 @@ const Users = () => {
   const showModalHandler = () => setIsValid(true);
   const hideModalHandler = () => setIsValid(false);
 
-  //Add item to cart
-  // const addItemToCart = (item) => {
-  //   const updatedTotalAmount = totalAmount + item.price * qty;
-
-  //   const inCartItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
-  //   const inCartItem = cartItems[inCartItemIndex];
-
-  //   if (inCartItem) {
-  //     const updatedItem = {
-  //       ...inCartItem, 
-  //       amount: inCartItem.amount + item.amount,
-  //     };
-  //     cartItems[inCartItemIndex] = updatedItem;
-  //   } else {
-  //     setCartItems([...cartItems, item]);
-  //   }
-
-  //   setTotalAmount(updatedTotalAmount);
-  // };
-
   return (
     <CartProvider>
       <h1>Users</h1>

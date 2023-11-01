@@ -6,7 +6,6 @@ import { useCartContext } from "../Store/CartProvider.js"
 const Appbar = ({ showModalHandler }) => {
   const { cartItems } = useCartContext();
 
-
   return (
     <div className="app-bar">
       <AppBar position="sticky">

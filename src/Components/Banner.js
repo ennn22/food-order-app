@@ -1,10 +1,10 @@
-
+import bannerImage from "../Images/banner.avif"
 
 const Banner = () => {
   
   return (
     <div className="food-banner">
-      <img src="../Images/banner,avif" alt="food-banner"></img>
+      <img src={bannerImage} alt="food-banner"></img>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Box } from "@mui/material"
 import AboutUs from "../Components/AboutUs";
 import Appbar from "../Components/Appbar";
 import Banner from "../Components/Banner";
@@ -14,17 +15,16 @@ const Users = () => {
 
   return (
     <CartProvider>
-      <h1>Users</h1>
       {isValid && <Cart isValid={isValid} onClose={hideModalHandler} />}
 
       <Appbar showModalHandler={showModalHandler} hideModalHandler={hideModalHandler} />
       <Banner />
-      <section>
+      <Box m= {2}>
         <AboutUs />
-        <div style={{ marginTop: "15rem" }} className="top-margin">
-          <Meals />
-        </div>
-      </section>
+        {/* <div style={{ marginTop: "15rem" }} className="top-margin"> */}
+        <Meals />
+        {/* </div> */}
+      </Box>
     </CartProvider>
   )
 }

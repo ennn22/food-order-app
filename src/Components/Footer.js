@@ -1,6 +1,6 @@
 import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from '@mui/material'
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useItemContext } from "../Store/ItemsProvider.js";
 
 const Footer = () => {
@@ -8,17 +8,13 @@ const Footer = () => {
   const { switchPage, setSwitchPage } = useItemContext();
 
   return (
-    <Box className="footer">
-      <Box className="switchpage-btn-container">
-        <IconButton 
-          onClick={() => setSwitchPage(!switchPage)}
-        >  
-          <PermIdentityIcon sx={{ color: "#451a03" }} />
-            <Typography variant="h6" sx={{ color: "#451a03" }}>
-              {switchPage ? "Admin" : "Users"}
-            </Typography>
-        </IconButton>
-      </Box>
+    <Box className="switchpage-btn-container">
+      <IconButton onClick={() => setSwitchPage(!switchPage)}>  
+        <Typography variant="h6" sx={{ color: "#F6F1EE" }}>
+          {switchPage ? "Admin" : "Users"}
+        </Typography>
+        <ArrowForwardIcon sx={{ color: "#F6F1EE", ml: 1 }} />
+      </IconButton>
     </Box>
   )
 }

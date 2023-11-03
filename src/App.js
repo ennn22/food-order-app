@@ -7,10 +7,10 @@ function App() {
   
   return (
     <ItemsProvider>
-      <div className='main-container'>
-        <Body />
-        <Footer/>
-      </div>
+      {/* <div className='main-container'> */}
+      <Body />
+      <Footer />
+      {/* </div> */}
     </ItemsProvider>
   );
 }

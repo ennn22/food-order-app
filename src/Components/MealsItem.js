@@ -1,37 +1,34 @@
-import { Card, CardActionArea, CardMedia, CardContent, CardActions, Button } from "@mui/material";
+import { Button, Card, CardActionArea, CardMedia, CardContent, CardActions, Typography } from "@mui/material";
 import { useItemContext } from "../Store/ItemsProvider.js";
 import { useCartContext } from "../Store/CartProvider.js"
 
 const MealsItem = ({ item }) => {
-  const { deleteItem, switchPage } = useItemContext();
+  const { deleteItem, editItem, switchPage } = useItemContext();
   const { addItem } = useCartContext();
   const { id, name, desc, img, price } = item;
-    // const { id, name, desc, img, price } = meal;
 
   const handleDelete = () => {
     deleteItem(id);
   }
 
-  // const handleAddToCart = (item) => {
-  //   addItemToCart(item);
-  // }
-
   return (
     <>
-      <Card>
+      <Card sx={{ height: "100%" }}>
         <CardActionArea>
           <CardMedia
             component="img"
             height="194"
-            src={img}>
+            src={img}
+            alt={name}
+          >
           </CardMedia>
           <CardContent>
             <div className="meal-card">
-              <p>{name}</p>
-              <p>{desc}</p>
+              <Typography variant="body1">{name}</Typography>
+              <Typography className="text-ellipsis" variant="body2">{desc}</Typography>
             </div>
             <div className="meal-price">
-              <p>{price}</p>
+              <Typography variant="body1">RM {price}</Typography>
             </div>
           </CardContent>
         </CardActionArea>
@@ -39,7 +36,10 @@ const MealsItem = ({ item }) => {
           {
             switchPage ? 
               <Button onClick={() => addItem(item)}>Add to cart</Button> : 
-                <Button onClick={handleDelete}>Delete</Button>
+                <>
+                  <Button onClick={handleDelete}>Delete</Button>
+                  {/* <Button onClick={handleEdit}>Edit</Button> */}
+                </>
           }
         </CardActions>
       </Card>

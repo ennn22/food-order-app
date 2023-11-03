@@ -1,15 +1,15 @@
 import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useItemContext } from "../Store/ItemsProvider.js";
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const AdminForm = ({ hideAddItemForm }) => {
-  const [newItem, setNewItem] = useState({name:"", desc:"", price:"", file: ""});
+  const [newItem, setNewItem] = useState({name:"", desc:"", price:"", img: ""});
   const { addItem } = useItemContext();
 
+  //handle text input from form except file
   const handleInput = (e) => {
     const { name, value } = e.target;
     setNewItem((previousItem) => ({
@@ -17,71 +17,69 @@ const AdminForm = ({ hideAddItemForm }) => {
     })) 
   };
 
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
+  const apiUrl = `https://api.imgbb.com/1/upload?&key=${apiKey}`;
 
-
+  //upload image from local and get url
   const uploadFile = (data) => {
+    const fileInput = new FormData();
+    fileInput.append('image', data);
+    axios.post(apiUrl, fileInput)
+      .then((res) => {
+      setNewItem((previousItem) => ({
+        ...previousItem, img: res.data.data.url
+      }))
+      })
+      .catch((err) => {
+      console.log(err);
+      });
+  }
+
+    //handle submit of file
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const fileInput = document.querySelector('#file-input');
+      uploadFile(fileInput.files[0]);
+    }
     
+  //add new item 
+  useEffect(() => {
+    if (newItem.img !== "") {
+      addItem(newItem);
+      setNewItem({name:"", desc:"", price:"", img: ""});
+    }
+  }, [newItem.img]);
 
-    axios.post('https://api.imgbb.com/1/upload', {
-      key: apiKey,
-      image: data,
-      expiration: 600
-    }, {
-      headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Headers': '*',
-      },
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const fileInput = document.querySelector('#file-input') ;
-    const img = await toBase64(fileInput.files[0]);
-    console.log(img)
-    uploadFile(img)
-    // addItem(newItem);
-    // setNewItem({name:"", desc:"", price:"", file: ""});
-
-  }
-  
   return (
     <Box className="admin-form-container"> 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <div className="admin-form-input">
           <TextField
             required
             fullWidth
             size="small"
             margin="dense"
+            variant="outlined"
             id="food-name"
             label="Name"
-            variant="outlined"
             name="name"
+            type="text"
+            inputProps={{maxLength: 20}}
             value={newItem.name}
             onChange={handleInput}
           /> 
           <TextField
+            sx= {{ backgroundColor: "#F6F1EE" }}
             required
             fullWidth
+            multiline
             size="small"
             margin="dense"
+            variant="outlined"
             id="food-desc"
             label="Description"
-            variant="outlined"
             name="desc"
+            type="text"
+            inputProps={{maxLength: 130}}
             value={newItem.desc}
             onChange={handleInput}
           /> 
@@ -90,28 +88,23 @@ const AdminForm = ({ hideAddItemForm }) => {
             fullWidth
             size="small"
             margin="dense"
+            variant="outlined"
             id="food-price"
             label="Price"
-            variant="outlined"
             name="price"
+            type="number"
+            placeholder="RM 0.00"
+            inputProps={{
+              step: 0.1,
+              min: 0,
+              max: 200
+            }}
             value={newItem.price}
             onChange={handleInput}
           />
-          {/* <TextField
-            required
-            fullWidth
-            size="small"
-            margin="dense"
-            id="food-image"
-            label="Image"
-            variant="outlined"
-            name="img"
-            value={newItem.img}
-            onChange={handleInput}
-          /> */}
         </div>
         <div className="admin-form-upload">
-            <label htmlFor="file"></label>
+            <label htmlFor="file-input"></label>
             <input required id="file-input" type="file" name="img"/>
         </div>
         <div className="admin-form-btn">

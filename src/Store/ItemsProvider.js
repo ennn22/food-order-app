@@ -94,6 +94,19 @@ const ItemsProvider = ({ children }) => {
     setItemsData(updatedItemsList);
   }
 
+  //Edit menu item
+  const editItem = async (item) => {
+    const res = await api.put(`/meals/${id}`, item);
+    const { id } = res.data;
+    const editedItemsList = itemsData.map((item) => {
+      if(item.id === id) {
+        return {...res.data}
+      }
+      return item;
+    })
+    setItemsData(editedItemsList);
+  }
+
 
   // const handleAddItem = async (item) => {
   //   await dispatch({ type: "addNewItem", payload: item });
@@ -115,7 +128,8 @@ const ItemsProvider = ({ children }) => {
     setSwitchPage,
     getItemsData,
     addItem,
-    deleteItem
+    deleteItem,
+    editItem
   }
 
   return (

@@ -48,12 +48,16 @@ const Cart = ({ isValid, onClose }) => {
         <Divider />
         <div className="cart-action-button">
           <div>
-            <Button size="small" onClick={() => clearAll()} >
-              <Typography variant="button" sx={{ textDecoration: "underline" }}>Clear all</Typography>
-            </Button>
+            {cartItems.length > 0 &&
+              <Button size="small" onClick={() => clearAll()} >
+                <Typography variant="button" sx={{ textDecoration: "underline" }}>Clear all</Typography>
+              </Button>
+            }       
             <Button variant="outlined" size="small" onClick={onClose}>Close</Button>
           </div>
-          <Button variant="contained">order</Button>
+          {cartItems.length > 0 &&
+            <Button variant="contained">order</Button>
+          }
         </div>
       </DialogContent>
     </Dialog>

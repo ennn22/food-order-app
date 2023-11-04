@@ -1,4 +1,4 @@
-import bannerImage from "../Images/banner.avif"
+import bannerImage from "../Images/penang.avif"
 
 const Banner = () => {
   

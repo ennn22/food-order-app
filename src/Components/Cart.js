@@ -42,7 +42,7 @@ const Cart = ({ isValid, onClose }) => {
         <Divider />
         <div className="total-amount">
           <p>Total Amount:</p>
-          <p>RM {totalAmount}</p>
+          <p>RM {totalAmount.toFixed(2)}</p>
         </div>
         <Divider />
         <div className="cart-action-button">

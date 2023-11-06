@@ -86,9 +86,7 @@ const ItemsProvider = ({ children }) => {
 
   //Update item 
   const updateItem = async (item) => {
-    console.log(item.id)
     const res = await api.put(`/meals/${item.id}`, item);
-    console.log(res.data)
     dispatch({
       type: "update",
       payload: res.data

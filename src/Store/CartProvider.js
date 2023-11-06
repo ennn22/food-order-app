@@ -17,7 +17,6 @@ const CartProvider = ({ children }) => {
     return Object.keys(lsCartParse).includes(item.name);
   });
 
-
   const [cartItems, setCartItems] = useState(cartItemsData);
   const [totalAmount, setTotalAmount] = useState(0);
   const [qty, setQty] = useState(lsCartParse);

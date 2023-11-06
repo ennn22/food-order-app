@@ -2,13 +2,18 @@ import { Button, Card, CardActionArea, CardMedia, CardContent, CardActions, Typo
 import { useItemContext } from "../Store/ItemsProvider.js";
 import { useCartContext } from "../Store/CartProvider.js"
 
-const MealsItem = ({ item }) => {
-  const { deleteItem, editItem, switchPage } = useItemContext();
+const MealsItem = ({ item, showEditForm }) => {
+  const { removeItem, updateItem, setEditableItem, switchPage } = useItemContext();
   const { addItem } = useCartContext();
   const { id, name, desc, img, price } = item;
 
   const handleDelete = () => {
-    deleteItem(id);
+    removeItem(id);
+  }
+
+  const handleEdit = (e) => {
+    setEditableItem(item);
+    showEditForm();
   }
 
   return (
@@ -38,7 +43,7 @@ const MealsItem = ({ item }) => {
               <Button onClick={() => addItem(item)}>Add to cart</Button> : 
                 <>
                   <Button onClick={handleDelete}>Delete</Button>
-                  {/* <Button onClick={handleEdit}>Edit</Button> */}
+                  <Button onClick={handleEdit}>Edit</Button>
                 </>
           }
         </CardActions>

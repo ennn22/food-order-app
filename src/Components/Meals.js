@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import MealsItem from "./MealsItem";
 import { useItemContext } from "../Store/ItemsProvider.js";
 
-const Meals = ({ openForm, closeForm }) => {
+const Meals = ({ showEditForm }) => {
   const { itemsData } = useItemContext();
 
   return (
@@ -26,7 +26,7 @@ const Meals = ({ openForm, closeForm }) => {
         {itemsData.map((item) => {
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
-              <MealsItem item={item}/>
+              <MealsItem item={item} showEditForm={showEditForm} />
             </Grid>
           )
         })

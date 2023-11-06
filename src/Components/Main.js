@@ -8,6 +8,7 @@ const Main = () => {
 
   const showAddItemForm = () => setIsValid(true);
   const hideAddItemForm = () => setIsValid(false);
+  
 
   return (
     <Box className="admin-main" m= {2}>
@@ -22,7 +23,7 @@ const Main = () => {
           }}>
           Add Food Item
         </Button>)}
-      <Meals />
+      <Meals showEditForm={showAddItemForm}/>
     </Box>
   )
 }

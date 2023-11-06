@@ -2,10 +2,11 @@ import { createContext } from "react";
 
 const ItemsContext = createContext({
   itemsData: [],
+  editableItem: null,
   switchPage: null,
   addNewItem: (item) => {},
   removeItem: (id) => {},
-  updateItem: (id) => {},
+  updateItem: (id, item) => {},
   togglePage: () => {},
 });
 

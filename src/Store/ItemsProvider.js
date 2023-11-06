@@ -1,135 +1,110 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useReducer, useState } from 'react';
 import ItemsContext from "./ItemsContext";
 import api from "../Api/meals";
-import Users from '../Pages/Users';
-import Admin from '../Pages/Admin';
 
 export function useItemContext() {
   return useContext(ItemsContext);
 }
-// const initialState = {
-//   switchPage: false,
-//   itemsData: []
-// }
 
-// function reducer(state, action)  {
-//   switch(action.type) {
-//     case "addNewItem": {
-//       return {
-//         ...state,
-//         itemsData: [...state, action.payload]
-//       };
-//     }
-//     case "removeItem": {
-//       const updatedItemData = state.itemsData.filter((item) => item.id !== action.payload);
-//       return {
-//         ...state,
-//         itemsData: updatedItemData
-//       }
-//     }
-//     case "updateItem": {
-//       return {
-//         ...state,
-//         itemsData: state.itemsData.map((item) => {
-//           if(item.id === action.payload.id) {
-//             return {
-//               ...item,
-//               ...action.payload
-//             }
-//           };
-//           return item;
-//         })
-//       }
-//     }
-//     default:
-//       return state;
-//   }
-//   throw Error('Unknown action: ' + action.type);
-// }
+const reducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case "get": 
+      return {...state, itemsData: payload};
+    case "togglePage":
+      return {...state, switchPage: !state.switchPage};
+    case "add":
+      return {...state, itemsData: [...state.itemsData, payload]};
+    case "remove":
+      const updatedItemsList = state.itemsData.filter((item) => {
+        return item.id !== payload;
+      })
+      return {
+        ...state, 
+        itemsData: updatedItemsList
+      }
+    case "update":
+      const updatedItem = state.itemsData.map((item) => {
+        return item.id === payload.id ? {...payload} : item;
+      })
+      return {
+        ...state,
+        itemsData: updatedItem
+      }
+    default: 
+      return state;
+  }
+};
 
 const ItemsProvider = ({ children }) => {
-  const [switchPage, setSwitchPage] = useState(true);
-  const [itemsData, setItemsData] = useState([]);
+  const [editableItem, setEditableItem] = useState();
+  const [state, dispatch] = useReducer(reducer, {
+    switchPage: true,
+    itemsData: [],
+  });
 
-  // const [state, dispatch] = useReducer(reducer, initialState);
-
-  //get Meals Menu from Api
-  // const getMealsAndDispatch = async (itemsData) => {
-  //   const getMeals = async (itemsData) => {
-  //     const res = (await api.get("/meals"))
-  //       .then((res) => res.data());
-  //     return res;
-  //   }
-  //   const meals = await getMeals(itemsData);
-  //   dispatch({ type: "addNewItem", payload: meals });
-  // }
-
-  //get itemsData from Api
-
-
-  // {switchPage ? <Users /> : <Admin /> }
+  //get meals items data from api
   const getItemsData = async () => {
     const res = await api.get("/meals");
-    const data = res.data;
-    setItemsData(data);
-  }
-  useEffect(() => {
-    getItemsData()
-  }, [])
-  
-
-  //Add new item to menu
-  const addItem = async (item) => {
-    const request = { id: Date.now(), ...item};
-    const res = await api.post("/meals", request);
-    setItemsData([...itemsData, res.data]);
+    dispatch({
+      type: "get",
+      payload: res.data
+    });
   };
 
-  //Delete item from menu
-  const deleteItem = async (id) => {
-    await api.delete(`/meals/${id}`);
-    const updatedItemsList = itemsData.filter((item) => {
-      return item.id !== id;
-    });
-    setItemsData(updatedItemsList);
-  }
+  useEffect(() => {
+    getItemsData();
+  }, []);
 
-  //Edit menu item
-  const editItem = async (item) => {
-    const res = await api.put(`/meals/${id}`, item);
-    const { id } = res.data;
-    const editedItemsList = itemsData.map((item) => {
-      if(item.id === id) {
-        return {...res.data}
-      }
-      return item;
+
+  //switch page between admin and users
+  const togglePage = () => {
+    dispatch({
+      type: "togglePage",
+      switchPage: !state.switchPage,
     })
-    setItemsData(editedItemsList);
   }
 
+  //add new item
+  const addNewItem = async (item) => {
+    const request = { id: Date.now(), ...item};
+    const res = await api.post("/meals", request);
+    dispatch({
+      type: "add",
+      payload: res.data
+    })
+  }
 
-  // const handleAddItem = async (item) => {
-  //   await dispatch({ type: "addNewItem", payload: item });
-  // }
+  //delete item from menu
+  const removeItem = async (id) => {
+    await api.delete(`/meals/${id}`);
+    dispatch({
+      type: "remove",
+      payload: id
+    })
+  }
 
-  // // Delete meal from menu
-  // const handleDeleteItem = async (id) => {
-  //   await api.delete(`/meals/${id}`);
-  //   dispatch({ type: "removeItem", payload: id });
-  //   const updatedMealList = meals.filter((meal) => {
-  //     return meal.id !== id;
-  //   });
-  //   setMeals(updatedMealList);
-  // }
+  //Update item 
+  const updateItem = async (item) => {
+    console.log(item.id)
+    const res = await api.put(`/meals/${item.id}`, item);
+    console.log(res.data)
+    dispatch({
+      type: "update",
+      payload: res.data
+    })
+  }
 
   const itemCtxValue = {
-    itemsData,
-    switchPage,
-    setSwitchPage,
+    itemsData: state.itemsData,
+    switchPage: state.switchPage,
+    editableItem,
+    setEditableItem,
+    togglePage,
     getItemsData,
-    addItem,
-    deleteItem,
-    editItem
+    addNewItem,
+    removeItem,
+    updateItem
   }
 
   return (

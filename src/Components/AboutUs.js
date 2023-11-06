@@ -24,7 +24,7 @@ const AboutUs = () => {
         </AccordionDetails>
       </Accordion>
     
-      <Accordion sx={{ backgroundColor: "#4F4A45", color: "#F6F1EE", marginTop: "10px" }}>
+      <Accordion sx={{ backgroundColor: "#4F4A45", color: "#F6F1EE", marginTop: "5px" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon sx={{ color: "#F6F1EE" }}/>}
           aria-controls="content"

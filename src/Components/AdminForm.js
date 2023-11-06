@@ -6,48 +6,137 @@ import { useItemContext } from "../Store/ItemsProvider.js";
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const AdminForm = ({ hideAddItemForm }) => {
-  const [newItem, setNewItem] = useState({name:"", desc:"", price:"", img: ""});
-  const { addItem } = useItemContext();
-
-  //handle text input from form except file
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setNewItem((previousItem) => ({
-      ...previousItem, [name]: value
-    })) 
-  };
+  const { addNewItem, updateItem, editableItem } = useItemContext();
 
   const apiUrl = `https://api.imgbb.com/1/upload?&key=${apiKey}`;
 
-  //upload image from local and get url
-  const uploadFile = (data) => {
+  const [inputFields, setInputFields] = useState({
+    name:"", desc:"", price:"", img: ""
+  });
+
+  const handleInputChanges = (e) => {
+    setInputFields((previousItem) => {
+      return {
+        ...previousItem,
+        [e.target.name]: e.target.value
+      }
+    })
+  }
+  
+  const uploadFile = (data, callback) => {
+    console.log(data)
     const fileInput = new FormData();
     fileInput.append('image', data);
+
     axios.post(apiUrl, fileInput)
-      .then((res) => {
-      setNewItem((previousItem) => ({
-        ...previousItem, img: res.data.data.url
-      }))
-      })
-      .catch((err) => {
-      console.log(err);
-      });
+      .then(
+        (res) => {
+          callback({
+            img: res.data.data.url
+          });
+        })
+      .catch(
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
-    //handle submit of file
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const fileInput = document.querySelector('#file-input');
-      uploadFile(fileInput.files[0]);
+  const fileInput = document.querySelector('#file-input');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editableItem) {
+      submitEditForm()
+    } else {
+      submitNewForm()
+    };
+  };
+
+  const submitEditForm = () => {
+    if (fileInput.files[0]) {
+      uploadFile(fileInput.files[0], (img) => {
+        updateItem({
+          ...inputFields,
+          ...img, 
+          id: editableItem.id
+        })
+      });
+    } else {
+      updateItem({
+        ...inputFields,
+        id: editableItem.id
+      })
     }
+    resetForm();
+  } 
+
+  const submitNewForm = () => {
+    uploadFile(fileInput.files[0], (img) => {
+      addNewItem({
+        ...inputFields,
+        ...img
+      });
+      resetForm();
+    });
+  }
+
+  const resetForm = () => {
+    hideAddItemForm();
+    setInputFields({ name: "", desc: "", price: "", img: ""});
+    fileInput.value = "";
+  }
+
+  // useEffect(() => {
+  //   console.log(inputFields)
+  // }, [inputFields])
+
+  // const [newItem, setNewItem] = useState({name:"", desc:"", price:"", img: ""});
+
+  //handle text input from admin form except file
+  // const handleInput = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewItem((previousItem) => ({
+  //     ...previousItem, [name]: value
+  //   })) 
+  // };
+
+  //upload image from local and get url
+  // const uploadFile = (data) => {
+  //   const fileInput = new FormData();
+  //   fileInput.append('image', data);
+  //   axios.post(apiUrl, fileInput)
+  //     .then((res) => {
+  //     setNewItem((previousItem) => ({
+  //       ...previousItem, img: res.data.data.url
+  //     }))
+  //     })
+  //     .catch((err) => {
+  //     console.log(err);
+  //     });
+  // }
+
+  //handle submit of file
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   uploadFile(fileInput.files[0]);
+  // }
     
   //add new item 
+  // useEffect(() => {
+  //   if (newItem.img !== "") {
+  //     addNewItem(newItem);
+  //     setNewItem({name:"", desc:"", price:"", img: ""});
+  //     fileInput.value = "";
+  //   }
+  // }, [newItem.img]);
+
   useEffect(() => {
-    if (newItem.img !== "") {
-      addItem(newItem);
-      setNewItem({name:"", desc:"", price:"", img: ""});
+    if (editableItem) {
+
+      setInputFields(editableItem)
     }
-  }, [newItem.img]);
+  }, [editableItem])
 
   return (
     <Box className="admin-form-container"> 
@@ -64,8 +153,10 @@ const AdminForm = ({ hideAddItemForm }) => {
             name="name"
             type="text"
             inputProps={{maxLength: 20}}
-            value={newItem.name}
-            onChange={handleInput}
+            value={inputFields.name}
+            onChange={handleInputChanges}
+            // onChange={(e)=> {handleInputChanges()}}
+            // onChange={handleInput}
           /> 
           <TextField
             sx= {{ backgroundColor: "#F6F1EE" }}
@@ -80,8 +171,10 @@ const AdminForm = ({ hideAddItemForm }) => {
             name="desc"
             type="text"
             inputProps={{maxLength: 130}}
-            value={newItem.desc}
-            onChange={handleInput}
+            value={inputFields.desc}
+            onChange={handleInputChanges}
+            // onChange={(e)=> {handleInputChanges()}}
+            // onChange={handleInput}
           /> 
           <TextField
             required
@@ -99,17 +192,19 @@ const AdminForm = ({ hideAddItemForm }) => {
               min: 0,
               max: 200
             }}
-            value={newItem.price}
-            onChange={handleInput}
+            value={inputFields.price}
+            onChange={handleInputChanges}
+            // onChange={(e)=> {handleInputChanges()}}
+            // onChange={handleInput}
           />
         </div>
         <div className="admin-form-upload">
             <label htmlFor="file-input"></label>
-            <input required id="file-input" type="file" name="img"/>
+            <input required={!editableItem} id="file-input" type="file" name="img"/>
         </div>
         <div className="admin-form-btn">
           <Button type="submit" size="small" variant="contained" color="success">
-            Add
+            Submit
           </Button>
           <Button variant="contained" size="small" color="error" onClick={hideAddItemForm}>
             Cancel

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button, Dialog, DialogContent, DialogTitle, Divider, List, ListItem, Typography } from "@mui/material";
 import { useCartContext } from "../Store/CartProvider.js"
 import AddIcon from '@mui/icons-material/Add';
@@ -23,7 +22,7 @@ const Cart = ({ isValid, onClose }) => {
                     <p>{item.name}</p>
                   </div>
                   <div className="item-price">
-                    <p>${item.price}</p>
+                    <p>RM {item.price}</p>
                   </div>
                 </div>
                 <div className="item-qty">
@@ -34,7 +33,7 @@ const Cart = ({ isValid, onClose }) => {
                   <RemoveIcon onClick={() => handleRemove(item)}/>
                 </div>
                 <div className="total-item-amount">
-                  <p>$<span>{qty[item.name] * item.price}</span></p>
+                  <p>RM <span>{qty[item.name] * item.price}</span></p>
                 </div>
               </ListItem>
             )
@@ -43,7 +42,7 @@ const Cart = ({ isValid, onClose }) => {
         <Divider />
         <div className="total-amount">
           <p>Total Amount:</p>
-          <p>${totalAmount}</p>
+          <p>RM {totalAmount}</p>
         </div>
         <Divider />
         <div className="cart-action-button">
@@ -62,7 +61,6 @@ const Cart = ({ isValid, onClose }) => {
       </DialogContent>
     </Dialog>
   )
-
 }
 
 export default Cart;

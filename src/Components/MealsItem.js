@@ -3,7 +3,7 @@ import { useItemContext } from "../Store/ItemsProvider.js";
 import { useCartContext } from "../Store/CartProvider.js"
 
 const MealsItem = ({ item, showEditForm }) => {
-  const { removeItem, updateItem, setEditableItem, switchPage } = useItemContext();
+  const { removeItem, setEditableItem, switchPage } = useItemContext();
   const { addItem } = useCartContext();
   const { id, name, desc, img, price } = item;
 

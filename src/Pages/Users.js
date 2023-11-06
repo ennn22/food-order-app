@@ -6,6 +6,7 @@ import Banner from "../Components/Banner";
 import Cart from "../Components/Cart";
 import CartProvider from "../Store/CartProvider";
 import Meals from "../Components/Meals";
+import { createPortal } from 'react-dom';
 
 const Users = () => {
   const [isValid, setIsValid] = useState(false);
@@ -15,7 +16,10 @@ const Users = () => {
 
   return (
     <CartProvider>
-      {isValid && <Cart isValid={isValid} onClose={hideModalHandler} />}
+      {isValid && createPortal(
+        <Cart isValid={isValid} onClose={hideModalHandler} />,
+        document.body
+      )};
 
       <Appbar showModalHandler={showModalHandler} hideModalHandler={hideModalHandler} />
       <Banner />

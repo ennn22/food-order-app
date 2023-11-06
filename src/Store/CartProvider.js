@@ -1,4 +1,3 @@
-import Cart from "../Components/Cart"
 import CartContext from './CartContext'
 import { useItemContext } from "./ItemsProvider.js";
 import { useContext, useEffect, useState } from 'react';
@@ -9,21 +8,17 @@ export function useCartContext() {
 
 const CartProvider = ({ children }) => {
   const { itemsData } = useItemContext();
+
   const LOCAL_STORAGE_KEY = "cart-items";
   const localStorageCartQty = localStorage.getItem(LOCAL_STORAGE_KEY);
   const lsCartParse = localStorageCartQty ? JSON.parse(localStorageCartQty) : {};
 
   const cartItemsData = itemsData.filter((item) => {
     return Object.keys(lsCartParse).includes(item.name);
-  })
+  });
+
 
   const [cartItems, setCartItems] = useState(cartItemsData);
-
-  // const [cartItems, setCartItems] = useState(() => {
-  //   return Object.keys(lsCartParse).map((cart) => {
-  //     return itemsData.find(i => i.name === cart)
-  //   })
-  // });
   const [totalAmount, setTotalAmount] = useState(0);
   const [qty, setQty] = useState(lsCartParse);
 
@@ -71,12 +66,11 @@ const CartProvider = ({ children }) => {
   const handleRemove = (item) => {
     if (qty[item.name] === 1) {
       removeItemFromCart(item);
-    } else {
-      setQty({
-        ...qty,
-        [item.name]: qty[item.name] - 1
-      })
-    }
+    } 
+    setQty({
+      ...qty,
+      [item.name]: qty[item.name] - 1
+    })
   }
 
   const clearAll = (item) => {

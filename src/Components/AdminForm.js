@@ -87,53 +87,8 @@ const AdminForm = ({ hideAddItemForm }) => {
     fileInput.value = "";
   }
 
-  // useEffect(() => {
-  //   console.log(inputFields)
-  // }, [inputFields])
-
-  // const [newItem, setNewItem] = useState({name:"", desc:"", price:"", img: ""});
-
-  //handle text input from admin form except file
-  // const handleInput = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewItem((previousItem) => ({
-  //     ...previousItem, [name]: value
-  //   })) 
-  // };
-
-  //upload image from local and get url
-  // const uploadFile = (data) => {
-  //   const fileInput = new FormData();
-  //   fileInput.append('image', data);
-  //   axios.post(apiUrl, fileInput)
-  //     .then((res) => {
-  //     setNewItem((previousItem) => ({
-  //       ...previousItem, img: res.data.data.url
-  //     }))
-  //     })
-  //     .catch((err) => {
-  //     console.log(err);
-  //     });
-  // }
-
-  //handle submit of file
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   uploadFile(fileInput.files[0]);
-  // }
-    
-  //add new item 
-  // useEffect(() => {
-  //   if (newItem.img !== "") {
-  //     addNewItem(newItem);
-  //     setNewItem({name:"", desc:"", price:"", img: ""});
-  //     fileInput.value = "";
-  //   }
-  // }, [newItem.img]);
-
   useEffect(() => {
     if (editableItem) {
-
       setInputFields(editableItem)
     }
   }, [editableItem])
